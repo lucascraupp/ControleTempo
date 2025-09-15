@@ -1,0 +1,10 @@
+[project]
+name = "controletempo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "sqlalchemy>=2.0.43",
+    "supabase>=2.18.1",
+]
