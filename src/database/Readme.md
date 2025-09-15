@@ -2,77 +2,72 @@
 
 ```mermaid
 erDiagram
-    Users ||--o{ AreasOfLife : "cria"
-    Users ||--o{ Projects : "cria"
-    Users ||--o{ Tasks : "cria"
-    Users ||--o{ ProjectsHasAreasOfLife : "associa"
-    Users ||--o{ UsersHasTasks : "gerencia"
-
-    AreasOfLife ||--o{ ProjectsHasAreasOfLife : "está em"
-    AreasOfLife ||--o{ TasksHasAreasOfLife : "está em"
-
-    Projects ||--o{ ProjectsHasAreasOfLife : "pertence a"
+    users ||--o{ areas_of_life : "cria"
+    users ||--o{ projects : "cria"
+    users ||--o{ tasks : "cria"
     
-    Tasks ||--o{ UsersHasTasks : "é gerenciada por"
-    
-    ProjectsHasAreasOfLife ||--o{ TasksHasProjects : "é associado em"
+    projects_has_areas_of_life }o--|| users : "cria"
+    projects_has_areas_of_life }o--|| areas_of_life: "contém"
+    projects_has_areas_of_life }o--|| projects : "contém"
 
-    UsersHasTasks ||--o{ TasksHasAreasOfLife : "relaciona com"
-    UsersHasTasks ||--o{ TasksHasProjects : "relaciona com"
+    users_has_tasks }o--|| users: "possui"
+    users_has_tasks }o--|| tasks: "pertence"
 
-    TasksHasAreasOfLife }o--|| AreasOfLife : "pertence a"
+    tasks_has_areas_of_life }o--|| users_has_tasks : "possui"
+    tasks_has_areas_of_life }o--|| areas_of_life : "possui"
 
-    TasksHasProjects }o--|| ProjectsHasAreasOfLife : "pertence a"
+    tasks_has_projects }o--|| users_has_tasks : "possui"
+    tasks_has_projects }o--|| projects_has_areas_of_life : "possui"
 
-    Users {
+    users {
         integer id PK
         string name
         datetime created_at
     }
 
-    AreasOfLife {
+    areas_of_life {
         integer id PK
         string name
-        integer who_created FK "Users.id"
+        integer who_created FK "users.id"
     }
 
-    Projects {
+    projects {
         integer id PK
         string name
-        integer who_created FK "Users.id"
+        integer who_created FK "users.id"
     }
 
-    Tasks {
+    tasks {
         integer id PK
         string name
-        integer who_created FK "Users.id"
+        integer who_created FK "users.id"
     }
 
-    ProjectsHasAreasOfLife {
-        integer user_id PK,FK "Users.id"
-        integer area_of_life_id PK,FK "AreasOfLife.id"
-        integer project_id PK,FK "Projects.id"
+    projects_has_areas_of_life {
+        integer user_id PK,FK "users.id"
+        integer area_of_life_id PK,FK "areas_of_life.id"
+        integer project_id PK,FK "projects.id"
         datetime created_at
     }
 
-    UsersHasTasks {
-        integer user_id PK,FK "Users.id"
-        integer task_id PK,FK "Tasks.id"
+    users_has_tasks {
+        integer user_id PK,FK "users.id"
+        integer task_id PK,FK "tasks.id"
         datetime created_at
     }
 
-    TasksHasAreasOfLife {
-        integer user_id PK,FK "UsersHasTasks.user_id"
-        integer task_id PK,FK "UsersHasTasks.task_id"
-        integer area_of_life_id PK,FK "AreasOfLife.id"
+    tasks_has_areas_of_life {
+        integer user_id PK,FK "users_has_tasks.user_id"
+        integer task_id PK,FK "users_has_tasks.task_id"
+        integer area_of_life_id PK,FK "areas_of_life.id"
         datetime created_at
     }
 
-    TasksHasProjects {
-        integer user_id PK,FK "UsersHasTasks.user_id"
-        integer task_id PK,FK "UsersHasTasks.task_id" 
-        integer area_of_life_id PK,FK "ProjectsHasAreasOfLife.area_of_life_id"
-        integer project_id PK,FK "ProjectsHasAreasOfLife.project_id"
+    tasks_has_projects {
+        integer user_id PK,FK "users_has_tasks.user_id"
+        integer task_id PK,FK "users_has_tasks.task_id" 
+        integer area_of_life_id PK,FK "projects_has_areas_of_life.area_of_life_id"
+        integer project_id PK,FK "projects_has_areas_of_life.project_id"
         datetime created_at
     }
 ```
